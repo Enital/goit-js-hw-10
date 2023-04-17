@@ -17,7 +17,7 @@ function searchCountries(event) {
     const dataInput = inputEl.value.trim();
     console.log(dataInput);
     if (!dataInput) {
-        clean(0);
+        // clean(0);
         return
     }
 
@@ -36,7 +36,7 @@ function searchCountries(event) {
         })
 
         .catch(() => {
-            clean(0);
+            // clean(0);
             screenMessage(0);
         })
 }
