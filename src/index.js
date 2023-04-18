@@ -24,15 +24,18 @@ function searchCountries(event) {
     fetchCountries(dataInput)
         .then(data => {
             console.log(data);
-            // console.log('then');
             if (data.length > 10) {
                 screenMessage();
+                cleanFunc();
                 return;
             }
             resultFunc(data);
         })
 
-        .catch(error => errorFunc);
+        .catch(error => {
+            errorFunc();
+            cleanFunc();
+        });
 };
 
 function screenMessage() {
@@ -60,13 +63,10 @@ function cleanFunc() {
 };
 
 function makeMarkupCountryList(data) {
-    // let markup = '';
-    // console.log(data);
-
     const markup = data.map((data) => 
         `
-            <li style="list-style: none">
-            <img src="${data.flags.svg}" width="40" height="25">
+            <li class="name-and-flag">
+            <img class="country-flag" src="${data.flags.svg}" width="40" height="24">
             <p> ${data.name.official}</p>
             </li>
         `
@@ -75,18 +75,16 @@ function makeMarkupCountryList(data) {
 };
 
 function makeMarkupCountryInfo(data) {
-    console.log('!!!')
-    // console.log(country);
-    // console.log(`${country.name.official}`);
     const markup = data.map((data) =>
     `
-        <img src="${data.flags.svg}" width="50" height="50">
-        <h1>${data.name.official}</h1>
-        <p>Capital: ${data.capital}</p>
-        <p>Population: ${data.population}</p>
-        <p>Languages: ${Object.values(data.languages).join(', ')}</p>
+        <div class="name-and-flag">
+            <img class="country-flag" src="${data.flags.svg}" width="40" height="24">
+            <h1>${data.name.official}</h1>
+        </div>
+        <p><span class="title">Capital:</span> ${data.capital}</p>
+        <p><span class="title">Population:</span> ${data.population}</p>
+        <p><span class="title">Languages:</span> ${Object.values(data.languages).join(', ')}</p>
     `
     ).join('');
-    console.log('x',markup);
     return markup;
 };
