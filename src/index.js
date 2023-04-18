@@ -15,7 +15,7 @@ inputEl.addEventListener('input', debounce(searchCountries, DEBOUNCE_DELAY));
 function searchCountries(event) {
     event.preventDefault();
     const dataInput = inputEl.value.trim();
-    // console.log(dataInput);
+    console.log(dataInput);
     if (!dataInput) {
         countryListEl.innerHTML = '';
         countryInfoEl.innerHTML = '';
@@ -24,9 +24,11 @@ function searchCountries(event) {
 
     fetchCountries(dataInput)
         .then(data => {
+            console.log(data);
             // console.log('then');
             if (data.length > 10) {
-                screenMessage;
+                Notify.info('Too many matches found. Please enter a more specific name');
+                // screenMessage;
                 return;
             }
             resultFunc(data);
@@ -39,9 +41,9 @@ function screenMessage() {
     Notify.info('Too many matches found. Please enter a more specific name');
 };
 
-// function errorFunc() {    
-//     Notify.failure('Oops, there is no country with this name');
-// };
+function errorFunc() {    
+    Notify.failure('Oops, there is no country with this name');
+};
 
 function resultFunc(country) {
     if (country.length === 1) {
@@ -64,23 +66,22 @@ function makeMarkupCountryList(data) {
             </li>
         `
     ).join('');
-    
-        countryListEl.innerHTML = markup;
+    return markup;
 }
 
-function makeMarkupCountryInfo(country) {
+function makeMarkupCountryInfo(data) {
     console.log('!!!')
     // console.log(country);
     // console.log(`${country.name.official}`);
-    const markup = data.map((country) =>
+    const markup = data.map((data) =>
     `
-        <img src="${country.flags.svg}" width="50" height="50">
-        <h1>${country.name.official}</h1>
-        <p>Capital: ${country.capital}</p>
-        <p>Population: ${country.population}</p>
-        <p>Languages: ${country.languages}</p>
+        <img src="${data.flags.svg}" width="50" height="50">
+        <h1>${data.name.official}</h1>
+        <p>Capital: ${data.capital}</p>
+        <p>Population: ${data.population}</p>
+        <p>Languages: ${data.languages}</p>
     `
     ).join('');
     console.log('x',markup);
-    countryInfoEl.innerHTML = markup;
+    return markup;
 };
