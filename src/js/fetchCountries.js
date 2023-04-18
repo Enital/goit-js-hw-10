@@ -1,16 +1,4 @@
-// function fetchCountries(name) {
-//     return fetch(`https://restcountries.com/v3.1/name/${name}?fields=name,capital,population,flags,languages`)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error(response.status);
-//             }
-//             return response.json()
-//         })
-// }
-
-// export { fetchCountries };
-
-export const fetchCountries = name => {
+export function fetchCountries (name)  {
     const BASE_URL = 'https://restcountries.com/v3.1/name/';
     const properties = 'fields=name,capital,population,flags,languages';
 
@@ -22,4 +10,3 @@ export const fetchCountries = name => {
         return response.json();
     });
 };
-// console.log(fetchCountries('c'));

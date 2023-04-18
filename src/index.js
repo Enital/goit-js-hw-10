@@ -24,54 +24,43 @@ function searchCountries(event) {
 
     fetchCountries(dataInput)
         .then(data => {
-            console.log(data);
+            // console.log('then');
             if (data.length > 10) {
-                screenMessage(10);
-                countryListEl.innerHTML = '';
+                screenMessage;
                 return;
             }
-            if (data.length === 1) {
-                console.log('1');
-                makeMarkupCountryInfo(data);
-                
-                return;
-            }
-            if ((data.length > 1) && (data.length <= 10)) {
-                makeMarkupCountryList(data);
-                
-                return;
-            }
-            
+            resultFunc(data);
         })
 
-        .catch(error => {
-            screenMessage(0);
-        });
+        .catch(error => errorFunc);
 };
 
-function screenMessage(result) {
-    if (result === 10) {
-        Notify.info('Too many matches found. Please enter a more specific name');
-        return
+function screenMessage() {
+    Notify.info('Too many matches found. Please enter a more specific name');
+};
+
+// function errorFunc() {    
+//     Notify.failure('Oops, there is no country with this name');
+// };
+
+function resultFunc(country) {
+    if (country.length === 1) {
+        countryInfoEl.innerHTML = makeMarkupCountryInfo(country);
     }
-    Notify.failure('Oops, there is no country with this name');
-
-}
-
-
-const clean = element => {
-    element.innerHTML = '';
+    else {
+        countryListEl.innerHTML = makeMarkupCountryList(country);
+    }
 }
 
 function makeMarkupCountryList(data) {
     // let markup = '';
-    console.log(data);
+    // console.log(data);
 
-    const markup = data.map((country) => 
+    const markup = data.map((data) => 
         `
-            <li class='country-list'>
-            <img class="country-flag" src="${country.flags.svg}" width="40" height="25">
-            <p class="country-name"> ${country.name.official}</p>
+            <li style="list-style: none">
+            <img src="${data.flags.svg}" width="40" height="25">
+            <p> ${data.name.official}</p>
             </li>
         `
     ).join('');
@@ -80,15 +69,18 @@ function makeMarkupCountryList(data) {
 }
 
 function makeMarkupCountryInfo(country) {
-    console.log(country);
+    console.log('!!!')
+    // console.log(country);
     // console.log(`${country.name.official}`);
-    const markup = ` 
-        <img class="country-info" src="${country.flags.png}" width="50" height="50">
-        <h1>${country.name}</h1>
+    const markup = data.map((country) =>
+    `
+        <img src="${country.flags.svg}" width="50" height="50">
+        <h1>${country.name.official}</h1>
         <p>Capital: ${country.capital}</p>
         <p>Population: ${country.population}</p>
         <p>Languages: ${country.languages}</p>
-    `;
-    console.log(markup);
+    `
+    ).join('');
+    console.log('x',markup);
     countryInfoEl.innerHTML = markup;
 };
