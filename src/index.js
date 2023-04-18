@@ -15,7 +15,6 @@ inputEl.addEventListener('input', debounce(searchCountries, DEBOUNCE_DELAY));
 function searchCountries(event) {
     event.preventDefault();
     const dataInput = inputEl.value.trim();
-    console.log(dataInput);
     if (!dataInput) {
         cleanFunc();
         return
@@ -25,7 +24,7 @@ function searchCountries(event) {
         .then(data => {
             console.log(data);
             if (data.length > 10) {
-                screenMessage();
+                messageSuccess();
                 cleanFunc();
                 return;
             }
@@ -33,16 +32,16 @@ function searchCountries(event) {
         })
 
         .catch(error => {
-            errorFunc();
+            messageError();
             cleanFunc();
         });
 };
 
-function screenMessage() {
+function messageSuccess() {
     Notify.info('Too many matches found. Please enter a more specific name');
 };
 
-function errorFunc() {    
+function messageError() {    
     Notify.failure('Oops, there is no country with this name');
 };
 
