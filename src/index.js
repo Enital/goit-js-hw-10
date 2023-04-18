@@ -17,8 +17,7 @@ function searchCountries(event) {
     const dataInput = inputEl.value.trim();
     console.log(dataInput);
     if (!dataInput) {
-        countryListEl.innerHTML = '';
-        countryInfoEl.innerHTML = '';
+        cleanFunc();
         return
     }
 
@@ -27,8 +26,7 @@ function searchCountries(event) {
             console.log(data);
             // console.log('then');
             if (data.length > 10) {
-                Notify.info('Too many matches found. Please enter a more specific name');
-                // screenMessage;
+                screenMessage();
                 return;
             }
             resultFunc(data);
@@ -47,12 +45,19 @@ function errorFunc() {
 
 function resultFunc(country) {
     if (country.length === 1) {
+        cleanFunc();
         countryInfoEl.innerHTML = makeMarkupCountryInfo(country);
     }
     else {
+        cleanFunc();
         countryListEl.innerHTML = makeMarkupCountryList(country);
     }
-}
+};
+
+function cleanFunc() {
+    countryListEl.innerHTML = '';
+    countryInfoEl.innerHTML = '';
+};
 
 function makeMarkupCountryList(data) {
     // let markup = '';
@@ -67,7 +72,7 @@ function makeMarkupCountryList(data) {
         `
     ).join('');
     return markup;
-}
+};
 
 function makeMarkupCountryInfo(data) {
     console.log('!!!')
@@ -79,7 +84,7 @@ function makeMarkupCountryInfo(data) {
         <h1>${data.name.official}</h1>
         <p>Capital: ${data.capital}</p>
         <p>Population: ${data.population}</p>
-        <p>Languages: ${data.languages}</p>
+        <p>Languages: ${Object.values(data.languages).join(', ')}</p>
     `
     ).join('');
     console.log('x',markup);
